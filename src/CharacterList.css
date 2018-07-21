@@ -1,0 +1,32 @@
+.character-list {
+  margin-top: 2em;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: stretch;
+  text-align: center;
+}
+
+.character-list a {
+  text-decoration: none;
+}
+
+.character {
+  width: 25em;
+  padding: 2em 0 2em 0;
+}
+
+.card {
+  display: flex;
+  justify-content: space-between;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+}
+
+.cover {
+  min-width: 10em;
+  height: 8em;
+}
