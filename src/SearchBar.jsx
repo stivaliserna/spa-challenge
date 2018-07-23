@@ -1,18 +1,16 @@
 import React, { Component } from 'react'
-import axios from 'axios'
+import TextField from '@material-ui/core/TextField'
 
-import CharacterList from './CharacterList'
-
-const { REACT_APP_API_URL } = process.env
+import './SearchBar.css'
 
 class SearchBar extends Component {
-  render() {
+  render () {
     return (
-      <form>
-        <input
-          placeholder="Search for..."
-          ref={input => this.search = input}
+      <form className="search-bar" noValidate autoComplete='off'>
+        <TextField
+          label='Search by name'
           onChange={this.props.onChange}
+          margin='normal'
         />
       </form>
     )
