@@ -5,8 +5,8 @@ import './Header.css'
 
 const Header = () => {
   return (
-    <div className="header">
-      <img src={marvelLogo} alt="marvel-logo"/>
+    <div className='header'>
+      <img src={marvelLogo} alt='marvel-logo' />
     </div>
   )
 }
