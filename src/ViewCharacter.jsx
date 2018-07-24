@@ -26,7 +26,7 @@ class ViewCharacter extends Component {
         id: ''
       },
       comics: [],
-      loading: true
+      loading: 0
     }
     this.apiUrl = `${REACT_APP_API_URL}/characters/${
       this.props.match.params.id
@@ -40,6 +40,11 @@ class ViewCharacter extends Component {
   }
 
   fetchCharacterResults () {
+    this.setState(prevState => {
+      return {
+        loading: prevState.loading + 1
+      };
+    });
     // Make HTTP reques with Axios
     axios
       .get(this.apiUrl, {
@@ -49,14 +54,19 @@ class ViewCharacter extends Component {
       })
       .then(res => {
         // Set state with result
-        this.setState(() => ({
+        this.setState((prevState) => ({
           character: res.data.data.results[0],
-          loading: false
+          loading: prevState.loading - 1
         }))
       })
   }
 
   fetchComicsResults () {
+    this.setState(prevState => {
+      return {
+        loading: prevState.loading + 1
+      };
+    });
     // Make HTTP reques with Axios
     axios
     .get(`${this.apiUrl}/comics`, {
@@ -66,19 +76,19 @@ class ViewCharacter extends Component {
     })
     .then(res => {
       // Set state with result
-      this.setState(() => ({
+      this.setState((prevState) => ({
         comics: res.data.data.results,
-        loading: false
+        loading: prevState.loading - 1
       }))
     })
   }
 
   render () {
     const { name, thumbnail, description } = this.state.character
-    const { comics } = this.state
+    const { comics, loading } = this.state
     return (
       <div className='character-info'>
-        {comics.length ? (
+        {!loading ? (
           <Card className='card-info'>
             <div className='details-info'>
               <CardMedia
