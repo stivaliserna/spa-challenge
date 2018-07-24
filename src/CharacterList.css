@@ -24,3 +24,12 @@
   min-width: 10em;
   height: 8em;
 }
+
+.sort-form {
+  margin-top: 1em;
+}
+
+.form-control {
+  width: 201px;
+  float: right;
+}

@@ -5,6 +5,10 @@ import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
 import Typography from '@material-ui/core/Typography'
+import Divider from '@material-ui/core/Divider'
+import Grid from '@material-ui/core/Grid'
+import CircularProgress from '@material-ui/core/CircularProgress';
+import red from '@material-ui/core/colors/red';
 
 import './ViewCharacter.css'
 
@@ -16,10 +20,12 @@ class ViewCharacter extends Component {
     this.state = {
       character: {
         name: '',
-        comics: {},
+        description: '',
+        stories: {},
         thumbnail: {},
         id: ''
       },
+      comics: [],
       loading: true
     }
     this.apiUrl = `${REACT_APP_API_URL}/characters/${
@@ -29,10 +35,11 @@ class ViewCharacter extends Component {
 
   // Lifecycle method
   componentDidMount () {
-    this.fetchResults()
+    this.fetchCharacterResults()
+    this.fetchComicsResults()
   }
 
-  fetchResults () {
+  fetchCharacterResults () {
     // Make HTTP reques with Axios
     axios
       .get(this.apiUrl, {
@@ -49,35 +56,58 @@ class ViewCharacter extends Component {
       })
   }
 
-  render () {
-    const { name, thumbnail, comics } = this.state.character
+  fetchComicsResults () {
+    // Make HTTP reques with Axios
+    axios
+    .get(`${this.apiUrl}/comics`, {
+      params: {
+        apikey: REACT_APP_PUBLIC_KEY
+      }
+    })
+    .then(res => {
+      // Set state with result
+      this.setState(() => ({
+        comics: res.data.data.results,
+        loading: false
+      }))
+    })
+  }
 
+  render () {
+    const { name, thumbnail, description } = this.state.character
+    const { comics } = this.state
     return (
       <div className='character-info'>
-        <Card className='card-info'>
-          <div className='details-info'>
-            <CardMedia
-              className='cover-info'
-              image={`${thumbnail.path}.${thumbnail.extension}`}
-              title='Marvel character'
-            />
-            {comics && comics.items ? (
-              <CardContent>
-                <Typography variant='headline'>{name}</Typography>
-                <Typography variant='body2'>Character comics</Typography>
-                {comics.items.map((el, index) => {
-                  return (
-                    <Typography paragraph key={index}>
-                      {el.name}
-                    </Typography>
-                  )
-                })}
+        {comics.length ? (
+          <Card className='card-info'>
+            <div className='details-info'>
+              <CardMedia
+                className='cover-info'
+                image={`${thumbnail.path}.${thumbnail.extension}`}
+                title='Marvel character'
+              />
+                <CardContent>
+                  <Typography gutterBottom variant='display1'>{name}</Typography>
+                  <Typography component='p'>{description}</Typography>
               </CardContent>
-            ) : (
-              <span>loading</span>
-            )}
-          </div>
-        </Card>
+            </div>
+            <Divider />
+            <Grid container>
+              {comics.map((el, index) => {
+                return (
+                  <Grid item xs key={index}>
+                    <img
+                      className="comic-img"
+                      src={`${el.thumbnail.path}.${el.thumbnail.extension}`}
+                    />
+                  </Grid>
+                )
+              })}
+            </Grid>
+          </Card>
+        ) : (
+          <CircularProgress size={70} style={{ color: red[600] }} />
+        )}
       </div>
     )
   }

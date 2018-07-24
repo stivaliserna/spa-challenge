@@ -1,9 +1,18 @@
 .character-info {
-  margin: 0 auto;
-  max-width: 60%;
+  display: flex;
+  justify-content: center;
   padding: 2em 0 2em 0;
+}
+
+.card-info {
+  width: 60%;
 }
 
 .cover-info {
   height: 25em;
+}
+
+.comic-img {
+  width: 10em;
+  height: 12em;
 }
